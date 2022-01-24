@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tnet-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: tnet-api
+  template:
+    metadata:
+      labels:
+        component: tnet-api
+    spec:
+      containers:
+      - name: tnet-api
+        image: msounak/tfnet-api:latest
+        resources:
+          limits:
+            memory: "4Gi"
+            cpu: "2.0"
+        readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            periodSeconds: 10
+            failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          periodSeconds: 10
+          failureThreshold: 3
+        ports:
+        - containerPort: 8000

@@ -127,3 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# VS code
+.vscode
+
+# Extra files
+data/embedding
+data/results
+data/test.csv
+data/train.csv
+
+models/Tnet-LF-300dGLOVE
+models/tokenizer.pickle
+
