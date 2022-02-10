@@ -10,7 +10,7 @@ from utils import preprocess, loop_pw
 from fastapi.middleware.cors import CORSMiddleware
 
 
-app = FastAPI(root_path='/api')
+app = FastAPI(root_path='/')
 
 origins = ["*"]
 app.add_middleware(

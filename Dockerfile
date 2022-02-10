@@ -1,14 +1,21 @@
-FROM python:3.8-slim
+FROM python:3.8-slim-buster AS compile-image
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends build-essential gcc
 
-COPY . /project
+RUN python -m venv /opt/venv
+# Make sure we use the virtualenv:
+ENV PATH="/opt/venv/bin:$PATH"
 
-WORKDIR /project
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-RUN apt-get update && apt-get install -y python3-pip
+FROM python:3.8-slim-buster AS build-image
+COPY --from=compile-image /opt/venv /opt/venv
 
+COPY . .
 
-RUN pip3 install -r requirements.txt 
+# Make sure we use the virtualenv:
+ENV PATH="/opt/venv/bin:$PATH"
 
-EXPOSE 8000
-
-CMD [ "python3", "src/app/main.py" ]
+EXPOSE 5000
+CMD ["python", "src/app/main.py"]
